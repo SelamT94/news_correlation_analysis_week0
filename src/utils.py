@@ -1,6 +1,7 @@
 import os
 import sys
 import glob
+import re
 import json
 import datetime
 from collections import Counter
@@ -180,3 +181,11 @@ def convert_2_timestamp(column, data):
                 timestamp_.append(a.strftime('%Y-%m-%d %H:%M:%S'))
         return timestamp_
     else: print(f"{column} not in data")
+
+
+   
+def get_tagged_users(df):
+    """get all @ in the messages"""
+
+    return df['msg_content'].map(lambda x: re.findall(r'@U\w+', x))
+
