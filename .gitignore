@@ -153,3 +153,5 @@ myenv/
 
 # all csv files 
 /data
+
+/scripts
