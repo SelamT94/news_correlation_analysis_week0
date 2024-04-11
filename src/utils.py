@@ -26,3 +26,7 @@ def analyze_websites_traffic(merge_df):
     websites_traffic = merge_df.groupby('source_name')['GlobalRank'].max().nlargest(10)
     return websites_traffic
 
+def get_domain(url):
+    return re.sub(r'^www.', '', re.sub(r'^https?://', '', url.split('/')[2]))
+
+
