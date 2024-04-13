@@ -64,9 +64,9 @@ elif page == "Sentiment Analysis":
 elif page == "Topic Modeling":
     # Topic Modeling
     st.write("## Topic Modeling")
-    screenshot_folder = "./screenshot"
-    image_path = os.path.join(screenshot_folder, "Topic_modeling.png")
-    st.image(image_path, caption='Topic Modeling Plot')
+    # screenshot_folder = "./screenshot"
+    # image_path = os.path.join(screenshot_folder, "Topic_modeling.png")
+    # st.image(image_path, caption='Topic Modeling Plot')
     # Include your topic modeling visualizations here
 
 
