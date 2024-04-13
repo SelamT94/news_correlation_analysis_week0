@@ -1,6 +1,6 @@
 import json
 import argparse
-import os, re
+import os, re,sys
 import glob
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -8,6 +8,8 @@ from datetime import datetime
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
+# from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 # Create wrapper classes for using news_sdk 
 class NewsDataLoader:
@@ -25,11 +27,32 @@ class NewsDataLoader:
 
     def load_data(self):
 
-        #Loading all the datas into a shared dataframe
-
+        '''Loading all the datas into a shared dataframe 
+            Cleaning the data
+            Merging the datas into a single dataframe.   '''
+        
         rating_df=pd.read_csv("../data/rating.csv")
         domain_locations_df = pd.read_csv("../data/domains_location.csv")
         traffic_data_df = pd.read_csv("../data/traffic.csv")
+       
+       # Drop duplicates
+        rating_df.drop_duplicates(inplace=True)
+        domain_locations_df.drop_duplicates(inplace=True)
+        traffic_data_df.drop_duplicates(inplace=True)
+       
+       # Drop unnecessary columns
+        if 'source_id' in rating_df.columns:
+            rating_df.drop(columns=['source_id'], inplace=True)
+
+        if 'url_to_image' in rating_df.columns:
+            rating_df.drop(columns=['url_to_image'], inplace=True)
+
+        # Drop rows with missing values
+        rating_df = rating_df.dropna(axis=0)
+        domain_locations_df = domain_locations_df.dropna(axis=0)
+       
+        # rating_df['domain'] = rating_df['url'].apply(get_domain)
+
         merge_df=pd.merge(rating_df, domain_locations_df ,left_on='source_name', right_on ='SourceCommonName' ,how ='left')
         merge_df=pd.merge(merge_df, traffic_data_df , left_on ='source_name' ,right_on='Domain' ,how ='left')
         # print(merge_df.columns)
@@ -74,6 +97,13 @@ class NewsDataLoader:
             preprocessed_text.append(' '.join(filtered_tokens))
 
         return pd.Series(preprocessed_text)
+    
+    # def extract_keywords(self, data, column, n_keywords=5):
+    #     # tfidf_vectorizer = TfidfVectorizer(max_features=n_keywords)
+    #     # tfidf_matrix = tfidf_vectorizer.fit_transform(data[column])
+
+    #     keywords = tfidf_vectorizer.get_feature_names_out()
+    #     return keywords
 
 if __name__ == "__main__":
     # Initialize NewsDataLoader with the correct data directory path
