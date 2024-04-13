@@ -163,3 +163,6 @@ venv.bak/
 /data
 
 /scripts
+
+/notebooks
+notebooks

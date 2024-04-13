@@ -9,7 +9,7 @@ from collections import Counter
 import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
-from nltk.corpus import stopwords
+from nltk.corpus import stopwords # type: ignore
 
 from loader import NewsDataLoader
 
